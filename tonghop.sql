@@ -17,6 +17,7 @@ FROM posts p
 JOIN users u ON u.user_id = p.user_id
 LEFT JOIN likes l ON l.post_id = p.post_id
 LEFT JOIN comments c ON c.post_id = p.post_id
+WHERE p.is_deleted = FALSE -- Lọc các bài viết chưa bị xóa mềm
 GROUP BY p.post_id, p.content, u.username; 
 
 -- REQ -03 
