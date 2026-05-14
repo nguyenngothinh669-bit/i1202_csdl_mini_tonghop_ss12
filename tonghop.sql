@@ -68,17 +68,33 @@ SELECT @id_moi AS 'ID bài viết vừa tạo';
 SELECT * FROM Posts WHERE post_id = @id_moi;
 
 -- REQ - 05 
-DELIMITER // 
-CREATE PROCEDURE sp_get_friends(
-    IN p_user_id INT,
-    IN p_limit INT,
+DELIMITER //
+
+CREATE PROCEDURE sp_GetFriendListPaginated(
+    IN p_user_id INT,   
+    IN p_limit INT,   
     IN p_offset INT
 )
 BEGIN
-    SELECT u.username, u.email
-    FROM friends f
-    JOIN users u ON f.friend_id = u.user_id
-    WHERE f.user_id = p_user_id AND f.status = 'accepted'
+
+    SELECT 
+        u.username, 
+        u.email
+    FROM Friends f
+    JOIN Users u ON f.friend_id = u.user_id
+    WHERE f.user_id = p_user_id 
+      AND f.status = 'accepted'
+
+    UNION
+
+    SELECT 
+        u.username, 
+        u.email
+    FROM Friends f
+    JOIN Users u ON f.user_id = u.user_id
+    WHERE f.friend_id = p_user_id 
+      AND f.status = 'accepted'
+
     LIMIT p_limit OFFSET p_offset;
 END //
 
