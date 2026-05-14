@@ -44,7 +44,6 @@ END //
 DELIMITER ; 
 
 -- REQ - 04 
-CREATE INDEX idx_post_created_at ON Posts (created_at) ; 
 DELIMITER //
 
 CREATE PROCEDURE sp_CreatePost(
@@ -69,3 +68,11 @@ SELECT @id_moi AS 'ID bài viết vừa tạo';
 SELECT * FROM Posts WHERE post_id = @id_moi;
 
 -- REQ - 05 
+
+
+-- REQ - 06 
+CREATE INDEX idx_post_created_at ON Posts (created_at) ; 
+
+-- REQ -07  
+-- da co trong bang a du 
+
