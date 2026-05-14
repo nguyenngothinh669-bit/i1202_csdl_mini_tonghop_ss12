@@ -20,3 +20,27 @@ LEFT JOIN comments c ON c.post_id = p.post_id
 GROUP BY p.post_id, p.content, u.username; 
 
 -- REQ -03 
+DELIMITER //
+CREATE PROCEDURE sp_register_user(
+    IN p_username VARCHAR(50),
+    IN p_password VARCHAR(255),
+    IN p_email VARCHAR(100)
+)
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM users
+        WHERE email = p_email
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Email đã được sử dụng';
+
+    ELSE
+        INSERT INTO users(username, password, email)
+        VALUES (p_username, p_password, p_email);
+
+    END IF;
+END //
+DELIMITER ; 
+
+-- REQ - 04 
