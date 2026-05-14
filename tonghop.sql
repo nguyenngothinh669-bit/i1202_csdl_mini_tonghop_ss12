@@ -44,3 +44,28 @@ END //
 DELIMITER ; 
 
 -- REQ - 04 
+CREATE INDEX idx_post_created_at ON Posts (created_at) ; 
+DELIMITER //
+
+CREATE PROCEDURE sp_CreatePost(
+    IN p_user_id INT,     
+    IN p_content TEXT,    
+    OUT p_post_id INT    
+)
+BEGIN
+    INSERT INTO Posts (user_id, content)
+    VALUES (p_user_id, p_content);
+    
+    SET p_post_id = LAST_INSERT_ID();
+END //
+
+DELIMITER ;
+
+SET @id_moi = 0;
+CALL sp_CreatePost(1, 'Đây là bài đăng đầu tiên !', @id_moi);
+
+SELECT @id_moi AS 'ID bài viết vừa tạo';
+
+SELECT * FROM Posts WHERE post_id = @id_moi;
+
+-- REQ - 05 
